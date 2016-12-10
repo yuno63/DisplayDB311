@@ -225,7 +225,9 @@ function setFig3D() {
             figName = "Thermocouple.png";
             break;
     }
-    cmd = '<img src="media/images/' + figName + '" style="height: 420px; width: 700px;">';
+    cmd = '<img src="https://cdn.rawgit.com/yuno63/DisplayDB311/master/media/images/' + 
+            figName + '" style="height: 420px; width: 700px;">';
+//     cmd = '<img src="media/images/' + figName + '" style="height: 420px; width: 700px;">';
     $('#id_show_3D').append(cmd);
 };
 
