@@ -1,0 +1,21 @@
+<script type="text/javascript">
+
+{% autoescape off %}
+var names_PVSS_DB = "{{ names_PVSS_DB|safe }}";
+var nameTables = {{ nameTables|safe }};
+var sensorsPVSS = {{ dbNamesPVSS|safe }};
+var sensorsDB = {{ dbNamesDB|safe }};
+var sensorsDBraw = {{ dbNamesDBraw|safe }};
+
+var sensorsDescript = {{ dbNamesDescript|safe }};
+var sensorsExp = {{ dbNamesExp|safe }};
+var sensorsStatus = {{ dbNamesStatus|safe }};
+var sensorsID = {{ dbNamesID|safe }};
+var dbValue = {{ dbValue|safe }};
+
+var tabNames = {{ tabNames|safe }};
+var tabTitles = {{ tabTitles|safe }};
+{% endautoescape %}
+
+</script>
+

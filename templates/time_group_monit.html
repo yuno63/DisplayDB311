@@ -1,0 +1,49 @@
+<br>
+
+<form role="form" id="draw_monit_form" class="form-inline" action="/monit/" method="POST">
+    {% csrf_token %}
+    
+<div class="row">
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-success btn-draw" 
+            data-toggle="tooltip" data-placement="bottom" title="Start/Stop on-line monitoring"
+            id="id_btn_monit">Start</button>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label for="time_interval">Interval, min:</label>
+            <input type="time_interval" class="form-control-sm" id="time_interval" 
+                data-toggle="tooltip" data-placement="bottom" title="Shown time interval"
+                 style="max-width:20%" value="{{ time_interval }}">
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label for="repetition_db_access">  Repetition, s:</label>
+            <input type="repetition_db_access" class="form-control-sm" id="repetition_db_access" 
+                data-toggle="tooltip" data-placement="bottom" title="DB access repetition"
+                style="max-width:20%" value="{{ repetition_db_access }}">
+        </div>
+    </div> 
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label for="id_time_monitor_shift">Shift:</label>
+            <input type="time_shift" class="form-control-sm" 
+                data-toggle="tooltip" data-placement="bottom" title="DB access time shift"
+                id="id_time_monitor_shift" style="max-width:20%"
+                value="{{ time_monitor_shift }}">
+            <label for="id_time_monitor_shift">days</label>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <label class="time_monitor-label" 
+            data-toggle="tooltip" data-placement="bottom" title="DB access time"
+            id="id_time_monitor">{{ time_monitor_access_str }}</label>
+    </div>
+</div>
+
+</form>
+
+<script type="text/javascript">
+$('#id_btn_monit').prop("disabled", true);
+</script>

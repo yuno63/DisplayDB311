@@ -1,0 +1,91 @@
+<br>
+
+<form role="form" id="draw_save_form" class="form-inline" action="/save/" method="POST">
+    {% csrf_token %}
+    
+<div class="row">
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-success btn-draw" 
+            id="id_btn_save">Save</button>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label for="time1-file">START:</label>
+            <input type="time1-file" class="form-control-sm" id="time1-file" 
+                style="max-width:70%" value="{{ start_str }}">
+        </div>
+<!--         <span class="glyphicon glyphicon-calendar"></span> -->
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label for="time2-file">  STOP:</label>
+            <input type="time2-file" class="form-control-sm" id="time2-file" 
+                style="max-width:70%" value="{{ now_str }}">
+        </div>
+<!--         <span class="glyphicon glyphicon-calendar"></span> -->
+    </div> 
+</div>
+
+</form>
+
+<script type="text/javascript">
+$('#id_btn_save').prop("disabled", true);
+</script>
+
+<br><br>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-4">
+            <label style="font-weight:bold"> Sensor group </label>
+            <div class="container">
+                <div class="radio">
+                    <input type="radio" name="opt-sens-save" id="rb_save_selected" 
+                        value="selected" onclick="changeSaveGroup()">
+                    <label id="lb_save_selected" style="font-weight:bold">Selected</label>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="opt-sens-save" id="rb_save_categ" 
+                        value="categ" onclick="changeSaveGroup()">
+                    <label id="lb_save_categ">Group</label>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="opt-sens-save" id="rb_save_all" 
+                        value="all" onclick="changeSaveGroup()">
+                    <label id="lb_save_all">All</label>
+                </div>
+            </div>
+            <script type="text/javascript">
+            document.getElementById("rb_save_selected").checked = true;
+            </script>
+        </div>
+        <div class="col-md-4">
+            <label style="font-weight:bold"> File name (w/o ext) </label>
+            <input type="text" class="form-control-sm" oninput="check_btn_save()"
+                    id="txt_file_name" style="width:180px">
+        </div>
+        <div class="col-md-3">
+            <label style="font-weight:bold"> File format </label>
+            <div class="container">
+                <div class="radio">
+                    <input type="radio" name="opt-file" id="rb_root" 
+                        value="root">
+                    <label  id="lb_root">root</label>
+                </div>
+                <div class="radio disabled">
+                    <input type="radio" name="opt-file" id="rb_txt" 
+                        value="txt" disabled>
+                    <label  id="lb_txt">txt</label>
+                </div>
+            </div>
+            <script type="text/javascript">
+            document.getElementById("rb_root").checked = true;
+            $('#lb_save_all').text("All ("+sensorsPVSS["All"].length+")");
+            check_btn_save();
+            </script>
+        </div>
+    </div>
+</div>
+

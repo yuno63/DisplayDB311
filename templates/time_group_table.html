@@ -1,0 +1,26 @@
+<br>
+
+<form role="form" id="show_table_form" class="form-inline" 
+        action="/table/" method="POST">
+    {% csrf_token %}
+    
+<div class="row">
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-success btn-draw" 
+            id="id_btn_table_update">Update</button>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label for="id_time_table_shift">Time shift:</label>
+            <input type="time_shift" class="form-control-sm" 
+                id="id_time_table_shift" style="max-width:20%"
+                value="{{ time_table_shift }}">
+            <label for="id_time_table_shift">days</label>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <label class="time_table-label" id="id_time_table">Access time: {{ time_table_access_str }}</label>
+    </div>
+</div>
+
+</form>

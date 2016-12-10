@@ -1,0 +1,33 @@
+<br>
+
+<form role="form" id="draw_form" class="form-inline" action="/draw/" method="POST">
+    {% csrf_token %}
+    
+<div class="row">
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-success btn-draw" 
+            id="id_btn_draw">Show</button>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label for="time1">START:</label>
+            <input type="time1" class="form-control-sm" id="time1" 
+                style="max-width:70%" value="{{ start_str }}">
+        </div>
+<!--         <span class="glyphicon glyphicon-calendar"></span> -->
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label for="time2">  STOP:</label>
+            <input type="time2" class="form-control-sm" id="time2" 
+                style="max-width:70%" value="{{ now_str }}">
+        </div>
+<!--         <span class="glyphicon glyphicon-calendar"></span> -->
+    </div> 
+</div>
+
+</form>
+
+<script type="text/javascript">
+$('#id_btn_draw').prop("disabled", true);
+</script>

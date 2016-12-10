@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'headings.html' %}
+
+<body>
+<nav class="navbar-wa105 navbar-default">
+    <div class="container-fluid text-center navbar-wa105">
+        <div class="navbar-header name-of-brand">
+            <a class="name-brand" href=""><b>3x1x1 Slow Control DB</b></a>
+        </div>
+    </div>
+</nav>
+
+{% include 'func_js.html' %}
+
+{% block categories_btn %}{% endblock %}
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-md-4">
+            {% block sensor_lists %}{% endblock %}
+        </div>
+        <div class="col-md-8">
+<!--             <div class="row-fluid"> -->
+
+                 <div class="tabbable">
+                    <ul class="nav nav-tabs" id="navDispTab">
+                        {% for tabName, tabTitle in tabDict.items %}
+                            {% if tabName_active in tabName %}
+                                <li style="font-size:18px"><a href="javascript:SwitchTab('tb_{{ tabName }}', 'content_{{ tabName }}');" id="tb_{{ tabName }}" class="active">{{ tabTitle }}</a></li>
+                            {% else %}
+                                <li style="font-size:18px"><a href="javascript:SwitchTab('tb_{{ tabName }}', 'content_{{ tabName }}');" id="tb_{{ tabName }}">{{ tabTitle }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div> 
+                    <div id="idTabContent" class="tab-content">
+                        <div class="tab-pane" id="content_disp">
+                            {% block time_group %}{% endblock %}
+                            {% block show_graph %}{% endblock %}
+                        </div>
+                        <div class="tab-pane" id="content_monit" style="display:none;">
+                            {% block time_group_monit %}{% endblock %}
+                            {% block show_graph_monit %}{% endblock %}
+                        </div>
+                        <div class="tab-pane" id="content_tabl" style="display:none;">
+                            {% block time_table_group %}{% endblock %}
+                            {% block table_group %}{% endblock %}
+                        </div>
+                        <div class="tab-pane" id="content_3D" style="display:none;">
+                            {% block view3D_group %}{% endblock %}
+                        </div>
+                        <div class="tab-pane" id="content_file" style="display:none;">
+                            {% block time_group_file %}{% endblock %}
+                        </div>
+                    </div>
+                    <script type="text/javascript">SwitchTab('tb_{{ tabName_active }}', 'content_{{ tabName_active }}')</script>
+<!--             </div> -->
+
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

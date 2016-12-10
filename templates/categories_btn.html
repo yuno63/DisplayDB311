@@ -1,0 +1,13 @@
+<div class="segmented-button">
+    {% for cat_name in categorie_names %}
+        {% if category_name_active in cat_name %}
+            <input type="radio" name="seg-1" checked
+                value="{{ cat_name }}" id="seg-{{ cat_name }}" />
+        {% else %}
+            <input type="radio" name="seg-1"
+                value="{{ cat_name }}" id="seg-{{ cat_name }}" />
+        {% endif %}
+        <label for="seg-{{ cat_name }}">{{ cat_name }}</label>
+    {% endfor %}
+</div>
+

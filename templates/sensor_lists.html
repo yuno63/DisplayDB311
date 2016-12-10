@@ -1,0 +1,54 @@
+<br>         
+<form role="form" class="form-inline">
+    <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1" style="font-weight:bold">Filter:</span>
+            <input type="text" class="form-control-sm" oninput="setSensors()"
+                    id="txt_filter" style="width:120px">
+    </div>
+</form>     
+
+<br>
+
+<div class="container">
+    <div class="radio radio-info">
+            <input type="radio" name="pvss" id="rb_pvss" 
+                value="Yes" onclick="changePvssDb()">
+            <label  id="lb_pvss" style="font-weight:bold">PVSS name</label>
+    </div>    
+    <div class="radio radio-info">
+            <input type="radio" name="pvss" id="rb_db" 
+                value="No" onclick="changePvssDb()" checked="">
+            <label id="lb_db" style="font-weight:normal">DB name</label>
+    </div>    
+</div>
+{% if pvss_status %}
+<script type="text/javascript">
+document.getElementById("rb_pvss").checked = true;
+</script>
+{% endif %}
+<script type="text/javascript">changePvssDb();</script>
+<br>
+
+<div class="row-fluid">
+    <div class="col-md-6">
+        <label class="sensors-label" id="label-sens">Group: {{ category_name_active }} ()</label>
+        <select id="sensors" class="sensors-list" size="20" onclick="appendSelected()" 
+            data-toggle="tooltip" data-placement="bottom" title="Click to select sensor"
+            multiple style="background-color:white;font-size:11px">
+        </select>
+    </div>
+    <script type="text/javascript">setSensors()</script>
+
+    <div class="col-md-6">
+        <label class="sensors-label" id="label-selected">Selected</label>
+        <select id="sensors-selected" class="sensors-list" size="10" multiple style="background-color:white;font-size:11px">
+        </select>
+        <br> <br>        
+        <button type="button" class="btn btn-warning" id="id_clear"  
+            name="btn_clear" value="clear" 
+             data-toggle="tooltip" data-placement="bottom" title="Clear list of selected sensors"
+            onclick="clearSelected()">Clear</button>
+        <script type="text/javascript">clearSelected()</script>
+    </div>
+</div>
+    
