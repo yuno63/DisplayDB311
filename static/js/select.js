@@ -225,7 +225,7 @@ function setFig3D() {
             figName = "Thermocouple.png";
             break;
     }
-    cmd = '<img src="https://cdn.rawgit.com/yuno63/DisplayDB311/master/media/images/' + 
+    cmd = '<img src="https://cdn.rawgit.com/yuno63/DBfiles/master/images/' + 
             figName + '" style="height: 420px; width: 700px;">';
 //     cmd = '<img src="media/images/' + figName + '" style="height: 420px; width: 700px;">';
     $('#id_show_3D').append(cmd);
@@ -347,7 +347,7 @@ $(document).on('submit', '#draw_monit_form', function(e){
     // change Start-Stop
     var elem = document.getElementById("id_btn_monit");
     if (elem.textContent=="Start") {
-        elem.textContent = "Stop";
+        elem.textContent = "Stop???";
         monitor();
         
         var repetition = $('#repetition_db_access').val();  // s
