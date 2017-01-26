@@ -1,0 +1,102 @@
+####### Compiler, tools and options
+
+ARCH       = $(shell root-config --arch)
+ROOTCFLAGS = $(shell root-config --cflags)
+ROOTLIBS   = $(shell root-config --libs)
+ROOTGLIBS  = $(shell root-config --glibs)
+ROOTEVLIBS = $(shell root-config --evelibs)
+
+CC       = gcc
+CXX      = g++
+# LEX      = flex
+# YACC     = yacc
+CFLAGS   = -pipe -Wall -W -O2 -g -pipe  -DQT_NO_DEBUG -DQT_SHARED -DQT_THREAD_SUPPORT
+# CXXFLAGS = -pipe -Wall -W -O2 -g -pipe -m64 -march=x86-64  -DQT_NO_DEBUG -DQT_SHARED -DQT_THREAD_SUPPORT
+CXXFLAGS = -pipe -Wall -W -O2 -g -pipe -m32 -march=x86-64  -DQT_NO_DEBUG -DQT_SHARED -DQT_THREAD_SUPPORT
+CXXFLAGS  += $(ROOTCFLAGS) 
+
+# LEXFLAGS =
+# YACCFLAGS= -d
+# INCPATH  = -I/usr/lib/qt-3.3/mkspecs/default -I. -I. -I/usr/lib64/mysql/include -I/usr/include/mysql/
+INCPATH  = -I. -I/usr/mysql/include -I/usr/include/mysql/
+LINK     = g++
+LFLAGS   =
+LIBS     = -L/usr/lib/mysql -lmysqlclient -L/usr/lib/ -lm -L/usr/mysql
+# AR       = ar cqs
+# RANLIB   =
+# TAR      = tar -cf
+# GZIP     = gzip -9f
+# COPY     = cp -f
+# COPY_FILE= $(COPY)
+# COPY_DIR = $(COPY) -r
+# INSTALL_FILE= $(COPY_FILE)
+# INSTALL_DIR = $(COPY_DIR)
+DEL_FILE = rm -f
+# SYMLINK  = ln -sf
+# DEL_DIR  = rmdir
+# MOVE     = mv -f
+# CHK_DIR_EXISTS= test -d
+# MKDIR    = mkdir -p
+
+####### Output directory
+
+# OBJECTS_DIR = ./
+
+####### Files
+
+# HEADERS =
+SOURCES = treeProcess.cpp
+OBJECTS = treeProcess.o
+# FORMS =
+# UICDECLS =
+# UICIMPLS =
+# SRCMOC   =
+# OBJMOC =
+# DESTDIR  =
+TARGET   = treeProcess 
+
+first: all
+####### Implicit rules
+
+.SUFFIXES: .c .o .cpp .cc .cxx .C
+
+.cpp.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.cc.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.c.o:
+	$(CC) -c $(CFLAGS) $(INCPATH) -o $@ $<
+
+####### Build rules
+
+all: Makefile $(TARGET) 
+
+treeProcess.exe: treeProcess.o
+	$(LINK) $(LFLAGS) -o treeProcess.exe treeProcess.o $(OBJCOMP) $(LIBS)
+
+$(TARGET):  $(OBJECTS)
+	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
+
+clean:
+	-$(DEL_FILE) $(OBJECTS)
+	-$(DEL_FILE) *~ core *.core
+
+
+####### Sub-libraries
+
+distclean: clean
+	-$(DEL_FILE) $(TARGET) $(TARGET)
+
+
+FORCE:
+
+####### Compile
+
+####### Install
+
+install:
+
+uninstall:
+

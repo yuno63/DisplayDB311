@@ -2,7 +2,8 @@ import os, sys
 from django import forms
 from django.conf import settings
 import datetime, time
-from db import unix_to_date, date_to_unix, DataBase
+from db import unix_to_date, date_to_unix, DB311, releaseDB_CERN  #, DataBase, propsDB
+
 
 def getValueDB(time_now=time.time(), db=0, dbNames={}):    
     names = dbNames['nameTables']
@@ -22,14 +23,16 @@ def getValueDB(time_now=time.time(), db=0, dbNames={}):
 
 class DisplayForm(forms.Form):
     print "===== DisplayForm ======"
-
     # start-stop times
     dt_days = 1 # days
+    shift = 0  # days
+    if releaseDB_CERN == "old":
+        shift = 90
     time_interval = 10  # min
     repetition_db_access = 10  # sec
-    time_monitor_shift = 50 # days
+    time_monitor_shift = shift # days
     time_monitor_shift_unix = time_monitor_shift*86400
-    time_table_shift = 50 # days
+    time_table_shift = shift # days
     time_table_shift_unix = time_table_shift*86400
     
     now_str=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -52,16 +55,17 @@ class DisplayForm(forms.Form):
     print "start_unix:", start_unix
 
     # DB processing
-    if 'cern.ch' in os.getcwd():
-        host="wa105cpu0001.cern.ch"
-    else:
-        host="localhost"
-    db = DataBase(host=host,
-                  user="wa105",
-                  password="Wa105-2016",
-                  db="wa105_sc")
+    #if 'cern.ch' in os.getcwd():
+        #host="wa105cpu0001.cern.ch"
+    #else:
+        #host="localhost"
+    #db = DataBase(host=host,
+                  #user="wa105",
+                  #password="Wa105-2016",
+                  #db="wa105_sc")
     
-    dbNames = db.get_db_names()
+    #db = DB311
+    dbNames = DB311.get_db_names()
     #print '\ndbNames.keys():', dbNames.keys()
     nameTables = dbNames['nameTables']
     categorie_names = dbNames["categorie_names"]
@@ -83,7 +87,7 @@ class DisplayForm(forms.Form):
         names_PVSS_DB = "namesDB"
     
     dbValue =  getValueDB(time_now=time_table_access_unix, \
-        db=db, dbNames=dbNames)
+        db=DB311, dbNames=dbNames)
     
     tabNames = ['disp','monit','tabl','3D','file']
     tabTitles = ['Graph','Live','Table','3D','File']

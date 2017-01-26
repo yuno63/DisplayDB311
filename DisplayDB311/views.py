@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect#, direct_to_template
 from django.template import Template, Context
 from django.utils.encoding import force_text
 import forms
-from db import unix_to_date, date_to_unix, DataBase
+from db import unix_to_date, date_to_unix, DB311 #, DataBase
 import os, sys, json, time, datetime
 import numpy
 import ROOT
@@ -86,23 +86,14 @@ def draw(request):
         print 'time2:', time2
         print 'pvss_db:', pvss_db
 
-        # DB processing
-        if 'cern.ch' in os.getcwd():
-            host="wa105cpu0001.cern.ch"
-        else:
-            host="localhost"
-        database = DataBase(host=host,
-                    user="wa105",
-                    password="Wa105-2016",
-                    db="wa105_sc")
-        dbNames = database.get_db_names()
+        dbNames = DB311.get_db_names()
         names = [name for name in namesRequest if name in dbNames['nameTables']]
         #print 'namesRequest:', namesRequest
         print 'names:', names
         if len(names)==0:       
             return HttpResponse(json.dumps({"nothing to see": "go home"}),
             content_type="application/json")
-        outDB = database.get_content(names, time1, time2, pvss_db, dbNames, len_array_max)
+        outDB = DB311.get_content(names, time1, time2, pvss_db, dbNames, len_array_max)
         if mode=="save":
             treeSens = ROOT.TTree('treeSens','tree for selected sensors')
             dictVal_np, dictTime_np, dictN = {}, {}, {} 
@@ -126,71 +117,76 @@ def draw(request):
             #treeSens.Print()
             #treeSens.Show(0)
             BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-            fnSaved = BASE_DIR + "/tmp_root_files/" + file_name + ".root"
+            fnSaved = "file://" + BASE_DIR + "/tmp_root_files/" + file_name + ".root"
             print "fnSaved:", fnSaved
             fileSaved = ROOT.TFile(fnSaved,'recreate')
             treeSens.Write('',ROOT.TObject.kOverwrite)
             fileSaved.Close()
 
             content = {
-                'tree': [],
+                'tree': [],#treeSens,
+                'fnSaved': fnSaved,
                 }
+            return HttpResponse(json.dumps(content), 
+                content_type="application/json")
         else:
             if outDB[0]=={}:       
                 return HttpResponse(json.dumps({"nothing to see": "go home"}),
                 content_type="application/json")
 
             yy = [outDB[0][name] for name in names]
-            time_str = [outDB[1][name] for name in names]
+            #time_str = [outDB[1][name] for name in names]
             u_time = [outDB[2][name] for name in names]
             minY, maxY = outDB[3], outDB[4]
-            #print 'minY:', minY, '  maxY:', maxY
-            #print 'len(yy[0]):', len(yy[0]), 'len(time_str[0]):', len(time_str[0]), 'len(u_time[0]):', len(u_time[0])
+            print 'minY:', minY, '  maxY:', maxY
+            print 'len(yy[0]):', len(yy[0]), 'len(u_time[0]):', len(u_time[0])#, 'len(time_str[0]):', len(time_str[0])
+            time_shift = 0 #3*3600
             if isinstance(time1,(str,unicode)):
-                minT = date_to_unix(time1)
-                maxT = date_to_unix(time2)
+                minT = date_to_unix(time1) - time_shift
+                maxT = date_to_unix(time2) - time_shift
                 minTstr, maxTstr = time1, time2
             else:
-                minT, maxT = time1, time2
+                minT, maxT = time1 - time_shift, time2 - time_shift
                 minTstr = unix_to_date(time1)
                 maxTstr = unix_to_date(time2)
-            #print 'minT:', minT, '  maxT:', maxT
+            print 'minT:', minT, '  maxT:', maxT
 
-            xlabels, xsForLabels = [], []
-            #print "--- 1 ----"
-            for i in xrange(len(time_str)):
-                for k in xrange(len(time_str[i])):
-                    u_time[i][k] -= minT
-                    try:
-                        xsForLabels.index(u_time[i][k])
-                    except:
-                        xsForLabels.append(u_time[i][k])
-                        xlabels.append(time_str[i][k])
-            #print "--- 2 ----"
+            #xlabels, xsForLabels = [], []
+            ##print "--- 1 ----"
+            #for i in xrange(len(time_str)):
+                #for k in xrange(len(time_str[i])):
+                    #u_time[i][k] -= time_shift #0.#minT
+                    #try:
+                        #xsForLabels.index(u_time[i][k])
+                    #except:
+                        #xsForLabels.append(u_time[i][k])
+                        #xlabels.append(time_str[i][k])
+            ##print "--- 2 ----"
 
-            xx, quantity, npoints = [], [], []
-            for i in xrange(len(names)):
-                xx.append(u_time[i]) 
-                quantity.append('')
-                npoints.append(len(u_time[i])),
+            #xx, quantity, npoints = [], [], []
+            #for i in xrange(len(names)):
+                #xx.append(u_time[i]) 
+                #quantity.append('')
+                #npoints.append(len(u_time[i])),
             
             content = {
                 'names': names,
-                'xx': xx,
+                'xx': u_time,
                 'yy': yy,
-                'time_str': time_str,
+                #'time_str': time_str,
                 'num_gr': len(names),
                 'minY': minY,
                 'maxY': maxY,
-                'maxX': maxT-minT,
+                'minX': minT, #0.,
+                'maxX': maxT,#-minT,
                 'minTstr': minTstr,
                 'maxTstr': maxTstr,
-                'xlabels': xlabels,
-                'xsForLabels': xsForLabels,
+                #'xlabels': xlabels,
+                #'xsForLabels': xsForLabels,
                 }
-        #print '\n\ncontent:'#, content
-        #for key in content.keys():
-            #print '\n', key, ':', content[key]
+        print '\n\ncontent:'#, content
+        for key in content.keys():
+            print '\n', key, ':', content[key]
 
         return HttpResponse(json.dumps(content), 
             content_type="application/json")
@@ -211,17 +207,8 @@ def table(request):
         print 'time_access:', time_access
         time_table_access_str = unix_to_date(time_access)
 
-        # DB processing
-        if 'cern.ch' in os.getcwd():
-            host="wa105cpu0001.cern.ch"
-        else:
-            host="localhost"
-        database = DataBase(host=host,
-                    user="wa105",
-                    password="Wa105-2016",
-                    db="wa105_sc")
-        dbNames = database.get_db_names()
-        dbValue =  forms.getValueDB(time_now=time_access, db=database, dbNames=dbNames)
+        dbNames = DB311.get_db_names()
+        dbValue =  forms.getValueDB(time_now=time_access, db=DB311, dbNames=dbNames)
 
         return HttpResponse(
             #json.dumps({"html": ren_template}), content_type="application/json"

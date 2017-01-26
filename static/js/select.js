@@ -247,8 +247,10 @@ function draw() {
         // if success post request
         success : function(json) {
             $("#object_draw").empty();
-            updateGUI( 'object_draw', json['xx'], json['yy'], json['num_gr'], json['maxX'], 
-                json['minY'], json['maxY'], json['xlabels'], json['xsForLabels'], json['names'] )
+//             updateGUI( 'object_draw', json['xx'], json['yy'], json['num_gr'], json['minX'], json['maxX'], 
+//                 json['minY'], json['maxY'], json['xlabels'], json['xsForLabels'], json['names'] )
+            updateGUI( 'object_draw', json['xx'], json['yy'], json['num_gr'], json['minX'], json['maxX'], 
+                json['minY'], json['maxY'], json['names'] )
         },
         // if unsuccess post request
         error : function(xhr,errmsg,err) {
@@ -275,8 +277,10 @@ function monitor() {
         success : function(json) {
             $("#object_draw_monit").empty();
 
-            updateGUI( 'object_draw_monit', json['xx'], json['yy'], json['num_gr'], json['maxX'], 
-                json['minY'], json['maxY'], json['xlabels'], json['xsForLabels'], json['names'] )
+//             updateGUI( 'object_draw_monit', json['xx'], json['yy'], json['num_gr'], json['minX'], json['maxX'], 
+//                 json['minY'], json['maxY'], json['xlabels'], json['xsForLabels'], json['names'] )
+            updateGUI( 'object_draw_monit', json['xx'], json['yy'], json['num_gr'], json['minX'], json['maxX'], 
+                json['minY'], json['maxY'], json['names'] )
 
             $('#id_time_monitor').text(json['maxTstr']);
         },
@@ -304,7 +308,9 @@ function save() {
         },
         // if success post request
         success : function(json) {
-            window.alert("---- save success ------- json:"+json);
+            window.alert("---- save success ------- json:"+json["fnSaved"]);
+            var filePath = json["fnSaved"];
+            $('<form></form>').attr('action', filePath).appendTo('body').submit().remove();
         },
         // if unsuccess post request
         error : function(xhr,errmsg,err) {
@@ -347,7 +353,7 @@ $(document).on('submit', '#draw_monit_form', function(e){
     // change Start-Stop
     var elem = document.getElementById("id_btn_monit");
     if (elem.textContent=="Start") {
-        elem.textContent = "Stop???";
+        elem.textContent = "Stop";
         monitor();
         
         var repetition = $('#repetition_db_access').val();  // s

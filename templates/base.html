@@ -3,6 +3,11 @@
 {% include 'headings.html' %}
 
 <body>
+
+<!--<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-md-4" style="padding-left: 5px; padding-right: 5px;">-->
+
 <nav class="navbar-wa105 navbar-default">
     <div class="container-fluid text-center navbar-wa105">
         <div class="navbar-header name-of-brand">
@@ -10,17 +15,22 @@
         </div>
     </div>
 </nav>
+<!--        </div>
 
+        <div class="col-md-7" style="padding-left: 5px; padding-right: 5px;">-->
 {% include 'func_js.html' %}
+<!--        </div>
+    </div>
+</div>-->
 
 {% block categories_btn %}{% endblock %}
 
 <div class="container-fluid">
     <div class="row-fluid">
-        <div class="col-md-4">
+        <div class="col-md-3" style="padding-left: 5px; padding-right: 5px;">
             {% block sensor_lists %}{% endblock %}
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9" style="padding-left: 5px; padding-right: 5px;">
 <!--             <div class="row-fluid"> -->
 
                  <div class="tabbable">

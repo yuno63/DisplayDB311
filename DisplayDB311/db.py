@@ -1,8 +1,29 @@
+import os, sys
 import MySQLdb
 import datetime
 import copy
 #from django.utils.datastructures import SortedDict
 
+# DB properties
+releaseDB_CERN = "old"  # "old" - (before 1 Dec 2016), "new" - (after 1 Dec 2016)
+
+user = "wa105"
+password = "Wa105-2016"
+nameDB = "wa105_sc"
+port = 0
+
+if 'cern.ch' in os.getcwd():
+    if releaseDB_CERN == "old":
+        host = "wa105cpu0001.cern.ch"
+    else:
+        host = "dbod-wa105-sc.cern.ch"
+        user = "admin"
+        password = "Neutri2016"
+        port = 5513
+else:
+    host="localhost"
+
+propsDB = {"host":host, "user":user,"password":password, "nameDB":nameDB, "port":port}
 
 def unix_to_date(date):
     "converct unix timestamp (int) to date strig ('Y-m-d H:M:S')"
@@ -25,11 +46,12 @@ def getDataFromCursor(cmd, cursor, ind=0, typ=''):
         return [d[ind] for d in data]
 
 class DataBase:
-    def __init__(self, host, user, password, db):
+    def __init__(self, host, user, password, db, port):
         self.host = host
         self.user = user
         self.password = password
         self.db = db
+        self.port = port
 
     def get_db_names(self):
         "Returns names of all categories"
@@ -37,7 +59,8 @@ class DataBase:
         db = MySQLdb.connect(self.host,
                              self.user,
                              self.password,
-                             self.db)
+                             self.db,
+                             self.port)
 
         cursor = db.cursor()
         dbNames = {}
@@ -98,7 +121,7 @@ class DataBase:
         #if len(names)>7:
             #len_array_max = 100
 
-        db = MySQLdb.connect(self.host, self.user, self.password, self.db)
+        db = MySQLdb.connect(self.host, self.user, self.password, self.db, self.port)
         if isinstance(time1,(str,unicode)):
             time1_unix = date_to_unix(time1)
             time2_unix = date_to_unix(time2)
@@ -167,7 +190,8 @@ class DataBase:
         db = MySQLdb.connect(self.host,
                              self.user,
                              self.password,
-                             self.db)
+                             self.db,
+                             self.port )
 
         cursor = db.cursor()
         cursor.execute("SELECT date FROM TE0001 ORDER BY date DESC LIMIT 1;")
@@ -177,5 +201,9 @@ class DataBase:
         db.close()
         return [first, last]
 
-
+DB311 = DataBase(host=propsDB["host"], 
+                user=propsDB["user"],
+                password=propsDB["password"],
+                db=propsDB["nameDB"],
+                port=propsDB["port"] )
     

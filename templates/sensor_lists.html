@@ -30,7 +30,7 @@ document.getElementById("rb_pvss").checked = true;
 <br>
 
 <div class="row-fluid">
-    <div class="col-md-6">
+    <div class="col-md-6" style="padding-left: 5px; padding-right: 5px;">
         <label class="sensors-label" id="label-sens">Group: {{ category_name_active }} ()</label>
         <select id="sensors" class="sensors-list" size="20" onclick="appendSelected()" 
             data-toggle="tooltip" data-placement="bottom" title="Click to select sensor"
@@ -39,7 +39,7 @@ document.getElementById("rb_pvss").checked = true;
     </div>
     <script type="text/javascript">setSensors()</script>
 
-    <div class="col-md-6">
+    <div class="col-md-6" style="padding-left: 5px; padding-right: 5px;">
         <label class="sensors-label" id="label-selected">Selected</label>
         <select id="sensors-selected" class="sensors-list" size="10" multiple style="background-color:white;font-size:11px">
         </select>
